@@ -1,0 +1,12 @@
+{
+  "port": 8080,
+  "uuSubAppDataStoreMap": {
+    "primary": "mongodb://127.0.0.1:27017/articlesMainPrimary",
+    "binary": "mongodb://127.0.0.1:27017/JokesMainBinary"
+  },
+  "privilegedUserMap": {
+    "asidOwner": "24-9575-1"
+  },
+  "asid": "11111111111111111111111111111111",
+  "log_level": "INFO"
+}

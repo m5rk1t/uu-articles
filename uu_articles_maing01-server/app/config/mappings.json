@@ -1,0 +1,56 @@
+{
+  "{vendor}-{uuApp}-{uuSubApp}": {
+    "useCaseMap": {
+      "articlesInstance/init": {
+        "realization": "api/controllers/ArticlesInstanceController.init",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "defaultUve": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "newspaper/create": {
+        "realization": "api/controllers/NewspaperController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "author/create": {
+        "realization": "api/controllers/AuthorController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "topic/create": {
+        "realization": "api/controllers/TopicController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "article/create": {
+        "realization": "api/controllers/ArticleController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "newspaper/update": {
+        "realization": "api/controllers/NewspaperController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "topic/delete": {
+        "realization": "api/controllers/TopicController.delete",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "article/list": {
+        "realization": "api/controllers/ArticleController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "articlesInstance/load": {
+        "realization": "api/controllers/ArticlesInstanceController.load",
+        "httpMethod": "GET",
+        "type": "CMD"
+      }
+    }
+  }
+}

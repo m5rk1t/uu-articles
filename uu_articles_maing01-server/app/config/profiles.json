@@ -1,0 +1,24 @@
+{
+  "{asid}": {
+    "profileList": ["AsidOwner"],
+    "permissionMap": {
+      "{asidOwner}": ["AsidOwner"]
+    },
+    "useCaseMap": {}
+  },
+  "*": {
+    "profileList": ["Authorities","Executives","AwidOwner","Public","Auditors"],
+    "useCaseMap": {
+      "articlesInstance/init": ["AwidOwner"],
+      "defaultUve": ["Public"],
+      "newspaper/create": ["Authorities","Executives"],
+      "author/create": ["Authorities","Executives"],
+      "topic/create": ["Authorities","Executives"],
+      "article/create": ["Authorities","Executives"],
+      "newspaper/update": ["Authorities","Executives"],
+      "topic/delete": ["Authorities","Executives"],
+      "article/list": ["Authorities","Executives","Auditors"],
+      "articlesInstance/load": ["Authorities","Executives","Auditors","Public"]
+    }
+  }
+}
