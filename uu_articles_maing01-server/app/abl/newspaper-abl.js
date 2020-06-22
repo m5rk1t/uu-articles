@@ -1,12 +1,18 @@
 "use strict";
 const Path = require("path");
 const { Validator } = require("uu_appg01_server").Validation;
-const { DaoFactory } = require("uu_appg01_server").ObjectStore;
+const { DaoFactory, ObjectStoreError } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const ArticlesInstanceAbl = require("./articles-instance-abl");
 const Errors = require("../api/errors/newspaper-error.js");
 
 const WARNINGS = {
-
+  createUnsupportedKeys: {
+    code: `${Errors.Create.UC_CODE}unsupportedKeys`
+  },
+  updateUnsupportedKeys: {
+    code: `${Errors.Update.UC_CODE}unsupportedKeys`
+  }
 };
 
 class NewspaperAbl {
@@ -17,11 +23,69 @@ class NewspaperAbl {
   }
 
   async update(awid, dtoIn) {
+    await ArticlesInstanceAbl.checkInstance(
+      awid,
+      Errors.Update.ArticlesInstanceDoesNotExist,
+      Errors.Update.ArticlesInstanceNotInProperState
+    ); 
+
+    let validationResult = this.validator.validate("updateDtoInType", dtoIn);
     
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.updateUnsupportedKeys.code,
+      Errors.Update.InvalidDtoIn
+    );
+    
+    dtoIn.awid = awid;
+
+    let newspaper; 
+    try {
+      newspaper = await this.dao.update(dtoIn);
+    } catch (e) {
+      if (e instanceof ObjectStoreError) {      
+        throw new Errors.Update.NewspaperDaoUpdateFailed({ uuAppErrorMap }, e);
+      }
+      throw e;
+    }
+
+    newspaper.uuAppErrorMap = uuAppErrorMap;
+    return newspaper; 
+
   }
 
   async create(awid, dtoIn) {
+    await ArticlesInstanceAbl.checkInstance(
+      awid,
+      Errors.Create.ArticlesInstanceDoesNotExist,
+      Errors.Create.ArticlesInstanceNotInProperState
+    ); 
+
+    let validationResult = this.validator.validate("createDtoInType", dtoIn);
     
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.createUnsupportedKeys.code,
+      Errors.Create.InvalidDtoIn
+    );
+    
+    dtoIn.awid = awid;
+
+    let newspaper;
+    try {
+      newspaper = await this.dao.create(dtoIn);
+    } catch (e) {
+      if (e instanceof ObjectStoreError) {      
+        throw new Errors.Create.NewspaperDaoCreateFailed({ uuAppErrorMap }, e);
+      }
+      throw e;
+    }
+
+    newspaper.uuAppErrorMap = uuAppErrorMap;
+    return newspaper;
+
   }
 
 

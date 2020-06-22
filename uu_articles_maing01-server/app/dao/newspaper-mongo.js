@@ -8,6 +8,17 @@ class NewspaperMongo extends UuObjectDao {
     await super.createIndex({ awid: 1, language: 1 });
   }
 
+  async create(uuObject) {
+    return await super.insertOne(uuObject);
+  }
+
+  async update(uuObject) {
+    let filter = {
+      awid: uuObject.awid,
+      id: uuObject.id
+    };
+    return await super.findOneAndUpdate(filter, uuObject, "NONE");
+  }
 }
 
 module.exports = NewspaperMongo;
