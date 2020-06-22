@@ -7,6 +7,9 @@ class AuthorMongo extends UuObjectDao {
     await super.createIndex({ awid: 1, _id: 1 }, { unique: true });
   }
 
+  async create(uuObject) {
+    return await super.insertOne(uuObject);
+  } 
 }
 
 module.exports = AuthorMongo;
