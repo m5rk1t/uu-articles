@@ -5,19 +5,34 @@
       "realization": "MongoDB",
       "schemaMap": {
         "articlesInstance": {
-          "realization": "dao/ArticlesInstanceMongo"
+          "realization": "dao/ArticlesInstanceMongo",
+          "maxNoi": 1
         },
         "newspaper": {
-          "realization": "dao/NewspaperMongo"
+          "realization": "dao/NewspaperMongo",
+          "maxNoi": 900
         },
         "author": {
-          "realization": "dao/AuthorMongo"
+          "realization": "dao/AuthorMongo",
+          "maxNoi": 900
         },
         "topic": {
-          "realization": "dao/TopicMongo"
+          "realization": "dao/TopicMongo",
+          "maxNoi": 900
         },
         "article": {
-          "realization": "dao/ArticleMongo"
+          "realization": "dao/ArticleMongo",
+          "maxNoi": 9000
+        }
+      }
+    },
+    "binary": {
+      "type": "uuAppBinaryStore",
+      "realization": "MongoDB",
+      "schemaMap": {
+        "uuBinary": {
+          "realization": "uu_appg01_binarystore-cmd:dao/UuAppBinarystoreMongo",
+          "maxSob": 5242880
         }
       }
     }
