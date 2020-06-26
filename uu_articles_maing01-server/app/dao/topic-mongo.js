@@ -1,6 +1,6 @@
 "use strict";
 const { UuObjectDao } = require("uu_appg01_server").ObjectStore;
-
+const { ObjectId } = require("bson");
 class TopicMongo extends UuObjectDao {
 
   async createSchema(){
@@ -26,6 +26,19 @@ class TopicMongo extends UuObjectDao {
       id: id
     };
     return await super.deleteOne(filter);
+  }
+
+  async listByTopicIdList(awid, topicIdList, pageInfo) {
+    let query = {
+      awid,
+      _id: {
+        $in: topicIdList.map(id => {
+          if (!ObjectId.isValid(id)) return id;
+          return new ObjectId(id);
+        })
+      }
+    };
+    return await super.find(query, pageInfo);
   }
 }
 
