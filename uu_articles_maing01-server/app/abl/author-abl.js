@@ -19,6 +19,10 @@ class AuthorAbl {
     this.dao = DaoFactory.getDao("author");
   }
 
+  async get(awid, dtoIn) {
+    
+  }
+
   async create(awid, dtoIn) {
     await ArticlesInstanceAbl.checkInstance(
       awid,

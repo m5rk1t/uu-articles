@@ -69,7 +69,13 @@ const Update = {
   }  
 };
 
+const Get = {
+  UC_CODE: `${NEWSPAPER_ERROR_PREFIX}get/`,
+  
+};
+
 module.exports = {
+  Get,
   Update,
   Create,
   

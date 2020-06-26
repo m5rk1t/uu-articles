@@ -3,6 +3,10 @@ const TopicAbl = require("../../abl/topic-abl.js");
 
 class TopicController {
 
+  get(ucEnv) {
+    return TopicAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+
   delete(ucEnv) {
     return TopicAbl.delete(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }

@@ -22,6 +22,10 @@ class NewspaperAbl {
     this.dao = DaoFactory.getDao("newspaper");
   }
 
+  async get(awid, dtoIn) {
+    
+  }
+
   async update(awid, dtoIn) {
     await ArticlesInstanceAbl.checkInstance(
       awid,

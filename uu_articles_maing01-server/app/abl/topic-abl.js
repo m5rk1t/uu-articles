@@ -15,7 +15,10 @@ const WARNINGS = {
   },
   deleteUnsupportedKeys: {
     code: `${Errors.Delete.UC_CODE}unsupportedKeys`
-  }
+  },
+  getUnsupportedKeys: {
+    code: `${Errors.Get.UC_CODE}unsupportedKeys`
+  }  
 };
 
 class TopicAbl {
@@ -23,10 +26,85 @@ class TopicAbl {
   constructor() {
     this.validator = new Validator(Path.join(__dirname, "..", "api", "validation_types", "topic-types.js"));
     this.dao = DaoFactory.getDao("topic");
+    this.articleDao = DaoFactory.getDao("article");
+  }
+
+  async get(awid, dtoIn) {
+     // hds 1
+     await ArticlesInstanceAbl.checkInstance(
+      awid,
+      Errors.Get.ArticlesInstanceDoesNotExist,
+      Errors.Get.ArticlesInstanceNotInProperState
+    ); 
+    // TODO underConstruction
+
+    // hds 2
+    let validationResult = this.validator.validate("getDtoInType", dtoIn);
+    
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.getUnsupportedKeys.code,
+      Errors.Get.InvalidDtoIn
+    );
+    
+    let topic = await this.dao.get(awid, dtoIn.id);
+    if (!topic) {
+      throw new Errors.Get.TopicDoesNotExist(uuAppErrorMap, { topicId: dtoIn.id });
+    }
+
+    topic.uuAppErrorMap = uuAppErrorMap;
+    return topic;
+    
   }
 
   async delete(awid, dtoIn) {
+    // hds 1
+    await ArticlesInstanceAbl.checkInstance(
+      awid,
+      Errors.Delete.ArticlesInstanceDoesNotExist,
+      Errors.Delete.ArticlesInstanceNotInProperState
+    ); 
+    // hds 2
+    let validationResult = this.validator.validate("deleteDtoInType", dtoIn);
     
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.deleteUnsupportedKeys.code,
+      Errors.Delete.InvalidDtoIn
+    );
+
+    // hds 3
+    //hds 3.1
+
+    let topic = await this.dao.get(awid, dtoIn.id);
+    // A5
+    if (!topic) {
+      throw new Errors.Delete.TopicDoesNotExist({ uuAppErrorMap }, { topicId: dtoIn.id });
+    }
+
+    // hds 3.2
+    let relatedArticles = await this.articleDao.listByTopicId(awid, dtoIn.id);
+    if (relatedArticles.itemList.length !== 0) {
+      throw new Errors.Delete.RelatedArticlesExist({ uuAppErrorMap }, { relatedArticles: relatedArticles});
+    }    
+
+    // hds 3.3
+    if (topic.icon) {
+      try {
+        await UuBinaryAbl.deleteBinary(awid, { code: topic.icon });
+      } catch (e) {
+        // A7
+        throw new Errors.Delete.UuBinaryDeleteFailed({ uuAppErrorMap }, e);
+      }
+    }
+
+    // hds 3.4
+    await this.dao.delete(awid, dtoIn.id);
+
+    // hds 4
+    return { uuAppErrorMap };
     
   }
 

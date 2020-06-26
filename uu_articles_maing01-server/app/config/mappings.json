@@ -50,6 +50,21 @@
         "realization": "api/controllers/ArticlesInstanceController.load",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "topic/get": {
+        "realization": "api/controllers/TopicController.get",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "newspaper/get": {
+        "realization": "api/controllers/NewspaperController.get",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "author/get": {
+        "realization": "api/controllers/AuthorController.get",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

@@ -3,6 +3,10 @@ const NewspaperAbl = require("../../abl/newspaper-abl.js");
 
 class NewspaperController {
 
+  get(ucEnv) {
+    return NewspaperAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+
   update(ucEnv) {
     return NewspaperAbl.update(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }

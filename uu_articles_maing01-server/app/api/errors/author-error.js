@@ -37,6 +37,12 @@ const Create = {
   
 };
 
+const Get = {
+  UC_CODE: `${AUTHOR_ERROR_PREFIX}get/`,
+  
+};
+
 module.exports = {
+  Get,
   Create
 };

@@ -58,10 +58,86 @@ const Create = {
 
 const Delete = {
   UC_CODE: `${TOPIC_ERROR_PREFIX}delete/`,
+  ArticlesInstanceDoesNotExist: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}articlesInstanceDoesNotExist`;
+      this.message = "ArticlesInstance does not exist.";
+    }
+  },
+  ArticlesInstanceNotInProperState: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}articlesInstanceNotInProperState`;
+      this.message = "ArticlesInstance is not in proper state [active|underConstruction].";
+    }
+  },
+  InvalidDtoIn: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  TopicDoesNotExist: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}topicDoesNotExist`;
+      this.message = "Topic does not exist.";
+    }
+  },
+  UuBinaryDeleteFailed: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}uuBinaryDeleteFailed`;
+      this.message = "Deleting uuBinary failed.";
+    }
+  }
+  
+};
+
+const Get = {
+  UC_CODE: `${TOPIC_ERROR_PREFIX}get/`,
+  ArticlesInstanceDoesNotExist: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Get.UC_CODE}articlesInstanceDoesNotExist`;
+      this.message = "ArticlesInstance does not exist.";
+    }
+  },
+  ArticlesInstanceNotInProperState: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Get.UC_CODE}articlesInstanceNotInProperState`;
+      this.message = "ArticlesInstance is not in proper state [active|underConstruction].";
+    }
+  },
+  InvalidDtoIn: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Get.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  TopicDoesNotExist: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Get.UC_CODE}topicDoesNotExist`;
+      this.message = "Topic does not exist.";
+    }
+  },
+  RelatedArticlesExist: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}relatedArticlesExist`;
+      this.message = "Related articles exist.";
+    }
+  }
   
 };
 
 module.exports = {
+  Get,
   Delete,
   Create
 };
