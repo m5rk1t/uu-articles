@@ -32,10 +32,7 @@ class TopicMongo extends UuObjectDao {
     let query = {
       awid,
       _id: {
-        $in: topicIdList.map(id => {
-          if (!ObjectId.isValid(id)) return id;
-          return new ObjectId(id);
-        })
+        $in: topicIdList.map(id => new ObjectId(id))
       }
     };
     return await super.find(query, pageInfo);

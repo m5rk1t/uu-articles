@@ -12,6 +12,10 @@ const WARNINGS = {
   },
   listUnsupportedKeys: {
     code: `${Errors.List.UC_CODE}unsupportedKeys`
+  },
+  createTopicDoesNotExist: {
+    code: `${Errors.Create.UC_CODE}topicDoesNotExist`,
+    message: "Some topics in dtoIn.topicIdList do not exist."
   }
 };
 
@@ -49,15 +53,26 @@ class ArticleAbl {
     dtoIn.uuIdentity = session.getIdentity().getUuIdentity();    
     dtoIn.awid = awid;
     //hds 3.1
-    let topicIdList = await this.topicDao.listByTopicIdList(awid, dtoIn.topicIdList, {});
-
-    // TODO: removing
-
-    //after remove non-existing topics
-    if (topicIdList.itemList.length === 0) {
+    let topicList = await this.topicDao.listByTopicIdList(awid, dtoIn.topicIdList, {});    
+    
+    if (topicList.itemList.length === 0) {
       throw new Errors.Create.TopicsDoNotExist({ uuAppErrorMap }, { topicIdList: dtoIn.topicIdList});
     } 
+    let topicIdList = topicList.itemList.map(topic => topic.id.toString())
+    // select non-existing ids
+    let nonExTopicIds = dtoIn.topicIdList.filter(id => !topicIdList.includes(id));
+    // hds 3.1.1.2
+    if (nonExTopicIds.length !== 0) {
+      ValidationHelper.addWarning(
+        uuAppErrorMap,
+        WARNINGS.createTopicDoesNotExist.code,
+        WARNINGS.createTopicDoesNotExist.message,
+        { nonExTopicIds: [...new Set(nonExTopicIds)] }
+      );
+    }
 
+    dtoIn.topicIdList = [...new Set(topicIdList)];
+    
     // hds 3.2
     let author = await this.authorDao.get(awid, dtoIn.authorId);
     // A5
