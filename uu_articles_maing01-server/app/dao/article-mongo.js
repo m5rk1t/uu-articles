@@ -19,9 +19,26 @@ class ArticleMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
+  async list(awid, pageInfo) {
+    return await super.find({ awid }, pageInfo);
+  }
+
+  async listByPublicDateAndTopicId(awid, publicationDate, topicId, pageInfo) {
+    if (!topicId){
+      /* TODO: we can add listByPublicDate
+      field topicIdList has at least one topic id; 
+      * another solution with $or does not use compound index; 
+      */
+      topicId = { $exists: true }
+    } else {
+      topicId = new ObjectId(topicId);
+    }
+    return await super.find({ awid, publicationDate: publicationDate, topicIdList: topicId }, pageInfo);
+  } 
+
   async listByTopicId(awid, topicId, pageInfo) {
 
-  
+    topicId = new ObjectId(topicId);
     return await super.find({ awid , topicIdList: topicId }, pageInfo);
   } 
 

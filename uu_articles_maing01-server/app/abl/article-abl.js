@@ -18,6 +18,10 @@ const WARNINGS = {
     message: "Some topics in dtoIn.topicIdList do not exist."
   }
 };
+const DEFAULTS = {
+  pageIndex: 0,
+  pageSize: 50
+};
 
 class ArticleAbl {
 
@@ -30,7 +34,41 @@ class ArticleAbl {
   }
 
   async list(awid, dtoIn) {
+    // hds 1
+    await ArticlesInstanceAbl.checkInstance(
+      awid,
+      Errors.List.ArticlesInstanceDoesNotExist,
+      Errors.List.ArticlesInstanceNotInProperState
+    ); 
+    //hds 2
+    let validationResult = this.validator.validate("listDtoInType", dtoIn);
     
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.listUnsupportedKeys.code,
+      Errors.List.InvalidDtoIn
+    );
+    if (!dtoIn.pageInfo) dtoIn.pageInfo = {};
+    if (!dtoIn.pageInfo.pageSize) dtoIn.pageInfo.pageSize = DEFAULTS.pageSize;
+    if (!dtoIn.pageInfo.pageIndex) dtoIn.pageInfo.pageIndex = DEFAULTS.pageIndex;
+
+    //hds 3
+    let areFiltersMissing = (!dtoIn.topicId && !dtoIn.publicationDate);
+    let isPublicationDateSet = (dtoIn.publicationDate);
+
+    let list;
+    if (areFiltersMissing){
+      list = await this.dao.list(awid, dtoIn.pageInfo);
+    } else if (isPublicationDateSet){
+      list = await this.dao.listByPublicDateAndTopicId(awid, dtoIn.publicationDate, dtoIn.topicId, dtoIn.pageInfo);
+    } else {
+      list = await this.dao.listByTopicId(awid, dtoIn.topicId, dtoIn.pageInfo);
+    }
+
+    // hds 4
+    list.uuAppErrorMap = uuAppErrorMap;
+    return list;
   }
 
   async create(awid, dtoIn, session) {

@@ -8,4 +8,12 @@ const createDtoInType = shape({
     abstract: uu5String(5000),
     publicationDate: date("%d.%m.%Y"),
     source: uri().isRequired()
-  })
+  });
+  const listDtoInType = shape({
+    topicId: id(), 
+    publicationDate: date("%d.%m.%Y"),
+    pageInfo: shape({
+      pageIndex: integer(),
+      pageSize: integer()
+    })
+   })

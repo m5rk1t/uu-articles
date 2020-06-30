@@ -58,7 +58,27 @@ const Create = {
 
 const List = {
   UC_CODE: `${ARTICLE_ERROR_PREFIX}list/`,
-  
+  ArticlesInstanceDoesNotExist: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}articlesInstanceDoesNotExist`;
+      this.message = "ArticlesInstance does not exist.";
+    }
+  },
+  ArticlesInstanceNotInProperState: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}articlesInstanceNotInProperState`;
+      this.message = "ArticlesInstance is not in proper state [active|underConstruction].";
+    }
+  },
+  InvalidDtoIn: class extends UuArticlesError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  } 
 };
 
 module.exports = {
