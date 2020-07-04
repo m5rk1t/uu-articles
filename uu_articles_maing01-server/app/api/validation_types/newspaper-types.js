@@ -8,6 +8,10 @@ const createDtoInType = shape({
     website: uri().isRequired()
   });
 
+  const getDtoInType = shape({
+    id: id().isRequired()
+  });
+
   const updateDtoInType = shape({
     id: id().isRequired(),
     name: string(255),

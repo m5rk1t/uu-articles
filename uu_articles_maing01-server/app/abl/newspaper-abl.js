@@ -10,6 +10,9 @@ const WARNINGS = {
   createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`
   },
+  getUnsupportedKeys: {
+    code: `${Errors.Get.UC_CODE}unsupportedKeys`
+  },
   updateUnsupportedKeys: {
     code: `${Errors.Update.UC_CODE}unsupportedKeys`
   }
@@ -23,7 +26,31 @@ class NewspaperAbl {
   }
 
   async get(awid, dtoIn) {
+     // hds 1
+     await ArticlesInstanceAbl.checkInstance(
+      awid,
+      Errors.Get.ArticlesInstanceDoesNotExist,
+      Errors.Get.ArticlesInstanceNotInProperState
+    ); 
+    // TODO underConstruction
+
+    // hds 2
+    let validationResult = this.validator.validate("getDtoInType", dtoIn);
     
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.getUnsupportedKeys.code,
+      Errors.Get.InvalidDtoIn
+    );
+    
+    let newspaper = await this.dao.get(awid, dtoIn.id);
+    if (!newspaper) {      
+        throw new Errors.Get.NewspaperDaoGetFailed(uuAppErrorMap, { id: dtoIn.id });
+      }
+
+    newspaper.uuAppErrorMap = uuAppErrorMap;
+    return newspaper;    
   }
 
   async update(awid, dtoIn) {
