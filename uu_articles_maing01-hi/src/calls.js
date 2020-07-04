@@ -13,9 +13,34 @@ let Calls = {
     return response.data;
   },
 
-  loadDemoContent(dtoIn) {
-    let commandUri = Calls.getCommandUri("loadDemoContent");
+  loadArticlesInstance(dtoIn) {
+    let commandUri = Calls.getCommandUri("articlesInstance/load");
     return Calls.call("get", commandUri, dtoIn);
+  },
+  
+  listArticles(dtoIn) {
+    let commandUri = Calls.getCommandUri("article/list");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+  
+  createArticle(dtoIn) {
+    let commandUri = Calls.getCommandUri("article/create");
+    return Calls.call("post", commandUri, dtoIn);
+  },
+
+  getNewspaper(dtoIn) {
+    let commandUri = Calls.getCommandUri("newspaper/get");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+  
+  updateNewspaper(dtoIn) {
+    let commandUri = Calls.getCommandUri("newspaper/update");
+    return Calls.call("post", commandUri, dtoIn);
+  },
+  
+  deleteTopic(dtoIn) {
+    let commandUri = Calls.getCommandUri("topic/delete");
+    return Calls.call("post", commandUri, dtoIn);
   },
 
   /*
