@@ -23,11 +23,14 @@ const About = UU5.Common.Component.lazy(() => import("../routes/about"));
 
 const DEFAULT_USE_CASE = "home";
 
+// parserování url, url parametry jsou předávány do route newspaper
+const uriBuilder = UU5.Common.Url.parse(window.location.href);
+
 const ROUTES = {
   "": DEFAULT_USE_CASE,
   home: { component: <Home /> },
   about: { component: <About /> },
-  newspaper: { component: <Newspaper /> }
+  newspaper: { component: <Newspaper newspaperId={uriBuilder.parameters ? uriBuilder.parameters.id : null} /> }
 };
 
 export const SpaReady = createVisualComponent({

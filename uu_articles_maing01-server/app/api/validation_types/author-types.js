@@ -7,3 +7,10 @@ const createDtoInType = shape({
     bio: uu5String(5000)
   });
 
+  const listDtoInType = shape({
+    pageInfo: shape({
+      pageIndex: integer(),
+      pageSize: integer()
+    })
+  });
+

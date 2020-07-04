@@ -26,16 +26,16 @@ const ArticleTile = createVisualComponent({
   defaultProps: {
     articleTile: null,
     colorSchema: "blue",
-    onDetail: () => {},
-    onUpdate: () => {},
-    onDelete: () => {}
+    onDetail: () => { },
+    onUpdate: () => { },
+    onDelete: () => { }
   },
   //@@viewOff:defaultProps
 
   render({ articleTile, colorSchema, onDelete }) {
     //@@viewOn:private
     function handleDelete() {
-        onDelete(articleTile)
+      onDelete(articleTile)
     }
     //@@viewOff:private
 
@@ -52,7 +52,7 @@ const ArticleTile = createVisualComponent({
     }
 
     if (!articleTile) {
-        return null;
+      return null;
     }
 
     return (

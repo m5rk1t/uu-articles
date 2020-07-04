@@ -56,8 +56,23 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
+      "topic/list": {
+        "realization": "api/controllers/TopicController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
       "newspaper/get": {
         "realization": "api/controllers/NewspaperController.get",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "newspaper/list": {
+        "realization": "api/controllers/NewspaperController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "author/list": {
+        "realization": "api/controllers/AuthorController.list",
         "httpMethod": "GET",
         "type": "CMD"
       },

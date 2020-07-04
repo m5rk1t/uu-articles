@@ -9,10 +9,22 @@ const ArticleProvider = createComponent({
   displayName: Config.TAG + "ArticleProvider",
   //@@viewOff:statics
 
-  render({ children }) {
+  //@@viewOn:propTypes
+  propTypes: {
+    newspaperId: UU5.PropTypes.string
+  },
+  //@@viewOff:propTypes
+
+  //@@viewOn:defaultProps
+  defaultProps: {
+    newspaperId: null
+  },
+  //@@viewOff:defaultProps
+  
+  render({ newspaperId, children }) {
     //@@viewOn:hooks
     let listDataValues = usePagingListData({
-      dtoIn: { pageInfo: { pageIndex: 0, pageSize: 50 } },
+      dtoIn: { newspaperId, pageInfo: { pageIndex: 0, pageSize: 50 } },
       onLoad: Calls.listArticles,
       onCreate: Calls.createArticle,
       onUpdate: handleUpdateArticle,

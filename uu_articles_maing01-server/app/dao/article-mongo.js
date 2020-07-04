@@ -11,16 +11,17 @@ class ArticleMongo extends UuObjectDao {
     await super.createIndex({ awid: 1, newspaperId: 1 });
   }
 
-  async create(uuObject) {
-       
-     uuObject.topicIdList = uuObject.topicIdList.map(id => new ObjectId(id));
-     uuObject.authorId = new ObjectId(uuObject.authorId);
-     uuObject.newspaperId = new ObjectId(uuObject.authorId);
+  async create(uuObject) {       
     return await super.insertOne(uuObject);
   }
 
-  async list(awid, pageInfo) {
-    return await super.find({ awid }, pageInfo);
+  async list(awid, newspaperId, publicationDate, topicId,  pageInfo) {
+    let filter = { awid };
+    newspaperId && (filter.newspaperId = newspaperId);
+    publicationDate && (filter.publicationDate = publicationDate);
+    topicId && (filter.topicIdList = topicId);
+
+    return await super.find(filter, pageInfo);
   }
 
   async listByPublicDateAndTopicId(awid, publicationDate, topicId, pageInfo) {

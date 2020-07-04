@@ -57,6 +57,7 @@ class ArticleAbl {
     let areFiltersMissing = (!dtoIn.topicId && !dtoIn.publicationDate);
     let isPublicationDateSet = (dtoIn.publicationDate);
 
+    /* a co to udělat následovně v dao?
     let list;
     if (areFiltersMissing){
       list = await this.dao.list(awid, dtoIn.pageInfo);
@@ -65,6 +66,9 @@ class ArticleAbl {
     } else {
       list = await this.dao.listByTopicId(awid, dtoIn.topicId, dtoIn.pageInfo);
     }
+    */
+
+   let list = await this.dao.list(awid, dtoIn.newspaperId, dtoIn.publicationDate, dtoIn.topicId, dtoIn.pageInfo);
 
     // hds 4
     list.uuAppErrorMap = uuAppErrorMap;

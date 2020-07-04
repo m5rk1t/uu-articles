@@ -6,6 +6,7 @@ import ArticleList from "../bricks/article-list";
 import ArticleProvider from "../bricks/article-provider";
 import ArticleCreate from "../bricks/article-create";
 import ArticlesInstanceContext from "../bricks/articles-instance-context";
+import NewspaperDetail from "../bricks/newspaper-detail";
 //@@viewOff:imports
 
 const Newspaper = createVisualComponent({
@@ -13,11 +14,24 @@ const Newspaper = createVisualComponent({
   displayName: Config.TAG + "Newspaper",
   //@@viewOff:statics
 
-  render() {
+  //@@viewOn:propTypes
+  propTypes: {
+    newspaperId: UU5.PropTypes.string
+  },
+  //@@viewOff:propTypes
+
+  //@@viewOn:defaultProps
+  defaultProps: {
+    newspaperId: null
+  },
+  //@@viewOff:defaultProps
+
+
+  render({ newspaperId }) {
     //@@viewOn:hooks
     const {
-        syncData: { authorizedProfileList }
-      } = useContext(ArticlesInstanceContext);
+      syncData: { authorizedProfileList }
+    } = useContext(ArticlesInstanceContext);
     const createArticleRef = useRef();
     const updateArticleRef = useRef();
     const deleteArticleRef = useRef();
@@ -58,10 +72,10 @@ const Newspaper = createVisualComponent({
     }
 
     function isCreateAuthorized() {
-        return authorizedProfileList.some(
-          profile => profile === Config.Profiles.AUTHORITIES || profile === Config.Profiles.EXECUTIVES
-        );
-      }
+      return authorizedProfileList.some(
+        profile => profile === Config.Profiles.AUTHORITIES || profile === Config.Profiles.EXECUTIVES
+      );
+    }
     //@@viewOff:private
 
     //@@viewOn:render
@@ -72,7 +86,7 @@ const Newspaper = createVisualComponent({
     function renderReady(articles) {
       return (
         <>
-        {isCreateAuthorized() && <ArticleCreate onCreate={handleCreateArticle} />}
+          {isCreateAuthorized() && <ArticleCreate onCreate={handleCreateArticle} newspaperId={newspaperId} />}
           <ArticleList articles={articles} onDelete={handleDeleteArticle} />
         </>
       );
@@ -92,12 +106,8 @@ const Newspaper = createVisualComponent({
 
     return (
       <UU5.Bricks.Container>
-         <UU5.Bricks.Text>newspaper name</UU5.Bricks.Text>
-         <UU5.Bricks.Text>newspaper nameOfChiefEditor</UU5.Bricks.Text>
-         <UU5.Bricks.Text>newspaper language</UU5.Bricks.Text>
-         <UU5.Bricks.DateTime value="01.01.2020" format="dd.mm.Y" /><br/> 
-    <UU5.Bricks.Link href="https://www.thetimes.co.uk/edition/business/rio-tinto-takes-1-8bn-hit-to-secure-oyu-tolgoi-copper-mine-in-mongolia-g2fvqn5zt" target="_blank">website</UU5.Bricks.Link>
-        <ArticleProvider>
+        <NewspaperDetail newspaperId={newspaperId} />
+        <ArticleProvider newspaperId={newspaperId}>
           {({ viewState, asyncData, handleCreate, handleUpdate, handleDelete, errorState }) => {
             createArticleRef.current = handleCreate;
             updateArticleRef.current = handleUpdate;

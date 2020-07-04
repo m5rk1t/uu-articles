@@ -18,8 +18,17 @@ const WARNINGS = {
   },
   getUnsupportedKeys: {
     code: `${Errors.Get.UC_CODE}unsupportedKeys`
+  },
+  listUnsupportedKeys: {
+    code: `${Errors.List.UC_CODE}unsupportedKeys`
   }  
 };
+
+const DEFAULTS = {
+  pageIndex: 0,
+  pageSize: 50
+};
+
 
 class TopicAbl {
 
@@ -57,6 +66,35 @@ class TopicAbl {
     return topic;
     
   }
+
+  async list(awid, dtoIn) {
+    // hds 1
+    await ArticlesInstanceAbl.checkInstance(
+      awid,
+      Errors.List.ArticlesInstanceDoesNotExist,
+      Errors.List.ArticlesInstanceNotInProperState
+    ); 
+    //hds 2
+    let validationResult = this.validator.validate("listDtoInType", dtoIn);
+    
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.listUnsupportedKeys.code,
+      Errors.List.InvalidDtoIn
+    );
+    if (!dtoIn.pageInfo) dtoIn.pageInfo = {};
+    if (!dtoIn.pageInfo.pageSize) dtoIn.pageInfo.pageSize = DEFAULTS.pageSize;
+    if (!dtoIn.pageInfo.pageIndex) dtoIn.pageInfo.pageIndex = DEFAULTS.pageIndex;
+
+    //hds 3
+   let list = await this.dao.list(awid, dtoIn.pageInfo);
+
+    // hds 4
+    list.uuAppErrorMap = uuAppErrorMap;
+    return list;
+  }
+
 
   async delete(awid, dtoIn) {
     // hds 1
@@ -125,34 +163,6 @@ class TopicAbl {
     
     dtoIn.awid = awid;
 
-    if (dtoIn.icon) {
-      //check if stream or base64
-      if (dtoIn.icon.readable) {
-        //check if the stream is valid
-        let { valid: isValidStream, stream } = await FileHelper.validateImageStream(dtoIn.icon);
-        if (!isValidStream) {
-          throw new Errors.Create.InvalidPhotoContentType({ uuAppErrorMap });
-        }
-        dtoIn.icon = stream;
-      } else {
-        //check if the base64 is valid
-        let binaryBuffer = Base64.urlSafeDecode(dtoIn.icon, "binary");
-        if (!FileHelper.validateImageBuffer(binaryBuffer).valid) {
-          throw new Errors.Create.InvalidPhotoContentType({ uuAppErrorMap });
-        }
-
-        dtoIn.icon = FileHelper.toStream(binaryBuffer);
-      }
-
-      
-      try {
-        let binary = await UuBinaryAbl.createBinary(awid, { data: dtoIn.icon });
-        dtoIn.icon = binary.code;
-      } catch (e) {
-        
-        throw new Errors.Create.UuBinaryCreateFailed({ uuAppErrorMap }, e);
-      }
-    }
     let topic;
     try {
       topic = await this.dao.create(dtoIn);

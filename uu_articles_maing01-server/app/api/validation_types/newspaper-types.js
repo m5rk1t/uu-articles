@@ -12,6 +12,14 @@ const createDtoInType = shape({
     id: id().isRequired()
   });
 
+  const listDtoInType = shape({
+    pageInfo: shape({
+      pageIndex: integer(),
+      pageSize: integer()
+    })
+  });
+
+
   const updateDtoInType = shape({
     id: id().isRequired(),
     name: string(255),

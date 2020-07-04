@@ -9,8 +9,17 @@ const Errors = require("../api/errors/author-error.js");
 const WARNINGS = {
   createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`
+  },
+  listUnsupportedKeys: {
+    code: `${Errors.List.UC_CODE}unsupportedKeys`
   }
 };
+
+const DEFAULTS = {
+  pageIndex: 0,
+  pageSize: 50
+};
+
 
 class AuthorAbl {
 
@@ -21,6 +30,34 @@ class AuthorAbl {
 
   async get(awid, dtoIn) {
     
+  }
+
+  async list(awid, dtoIn) {
+    // hds 1
+    await ArticlesInstanceAbl.checkInstance(
+      awid,
+      Errors.List.ArticlesInstanceDoesNotExist,
+      Errors.List.ArticlesInstanceNotInProperState
+    ); 
+    //hds 2
+    let validationResult = this.validator.validate("listDtoInType", dtoIn);
+    
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.listUnsupportedKeys.code,
+      Errors.List.InvalidDtoIn
+    );
+    if (!dtoIn.pageInfo) dtoIn.pageInfo = {};
+    if (!dtoIn.pageInfo.pageSize) dtoIn.pageInfo.pageSize = DEFAULTS.pageSize;
+    if (!dtoIn.pageInfo.pageIndex) dtoIn.pageInfo.pageIndex = DEFAULTS.pageIndex;
+
+    //hds 3
+   let list = await this.dao.list(awid, dtoIn.pageInfo);
+
+    // hds 4
+    list.uuAppErrorMap = uuAppErrorMap;
+    return list;
   }
 
   async create(awid, dtoIn) {

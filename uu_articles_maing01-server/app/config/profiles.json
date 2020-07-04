@@ -20,8 +20,11 @@
       "article/list": ["Authorities","Executives","Auditors"],
       "articlesInstance/load": ["Authorities","Executives","Auditors","Public"],
       "topic/get": ["Authorities","Executives","Auditors"],
+      "topic/list": ["Authorities","Executives","Auditors"],
       "newspaper/get": ["Authorities","Executives","Auditors"],
-      "author/get": ["Authorities","Executives","Auditors"]
+      "newspaper/list": ["Authorities","Executives","Auditors"],
+      "author/get": ["Authorities","Executives","Auditors"],
+      "author/list": ["Authorities","Executives","Auditors"]
     }
   }
 }

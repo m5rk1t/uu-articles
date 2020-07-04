@@ -18,6 +18,12 @@ class AuthorMongo extends UuObjectDao {
     };
     return await super.findOne(filter);
   }
+
+  async list(awid,  pageInfo) {
+    let filter = { awid };
+
+    return await super.find(filter, pageInfo);
+  }
 }
 
 module.exports = AuthorMongo;

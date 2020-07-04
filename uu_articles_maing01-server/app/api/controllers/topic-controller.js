@@ -15,6 +15,11 @@ class TopicController {
     return TopicAbl.create(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
 
+  list(ucEnv) {
+    return TopicAbl.list(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+
+
 }
 
 module.exports = new TopicController();

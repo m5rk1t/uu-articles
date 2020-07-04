@@ -27,6 +27,13 @@ class NewspaperMongo extends UuObjectDao {
     };
     return await super.findOneAndUpdate(filter, uuObject, "NONE");
   }
+
+  async list(awid,  pageInfo) {
+    let filter = { awid };
+
+    return await super.find(filter, pageInfo);
+  }
+
 }
 
 module.exports = NewspaperMongo;

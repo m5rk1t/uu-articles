@@ -28,6 +28,13 @@ class TopicMongo extends UuObjectDao {
     return await super.deleteOne(filter);
   }
 
+  async list(awid,  pageInfo) {
+    let filter = { awid };
+
+    return await super.find(filter, pageInfo);
+  }
+
+
   async listByTopicIdList(awid, topicIdList, pageInfo) {
     let query = {
       awid,

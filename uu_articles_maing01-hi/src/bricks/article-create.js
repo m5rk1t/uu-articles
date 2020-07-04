@@ -17,17 +17,19 @@ const ArticleCreate = createComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    onCreate: UU5.PropTypes.func
+    onCreate: UU5.PropTypes.func,
+    newspaperId: UU5.PropTypes.string
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
   defaultProps: {
-    onCreate: () => {}
+    onCreate: () => {},
+    newspaperId: null
   },
   //@@viewOff:defaultProps
 
-  render({ onCreate }) {
+  render({ onCreate, newspaperId }) {
     //@viewOn:hooks
     const [mode, setMode] = useState(Mode.BUTTON);
     //@viewOff:hooks
@@ -53,7 +55,7 @@ const ArticleCreate = createComponent({
     }
 
     function renderForm() {
-      return <ArticleCreateForm onSave={handleSave} onCancel={handleCancel} />;
+      return <ArticleCreateForm onSave={handleSave} onCancel={handleCancel} defaultNewspaperId={newspaperId} />;
     }
 
     switch (mode) {

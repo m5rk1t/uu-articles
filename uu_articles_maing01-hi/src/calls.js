@@ -22,7 +22,22 @@ let Calls = {
     let commandUri = Calls.getCommandUri("article/list");
     return Calls.call("get", commandUri, dtoIn);
   },
-  
+
+  listTopics(dtoIn) {
+    let commandUri = Calls.getCommandUri("topic/list");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
+  listNewspapers(dtoIn) {
+    let commandUri = Calls.getCommandUri("newspaper/list");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
+  listAuthors(dtoIn) {
+    let commandUri = Calls.getCommandUri("author/list");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
   createArticle(dtoIn) {
     let commandUri = Calls.getCommandUri("article/create");
     return Calls.call("post", commandUri, dtoIn);
@@ -40,6 +55,11 @@ let Calls = {
   
   deleteTopic(dtoIn) {
     let commandUri = Calls.getCommandUri("topic/delete");
+    return Calls.call("post", commandUri, dtoIn);
+  },
+
+  deleteArticle(dtoIn) {
+    let commandUri = Calls.getCommandUri("article/delete");
     return Calls.call("post", commandUri, dtoIn);
   },
 

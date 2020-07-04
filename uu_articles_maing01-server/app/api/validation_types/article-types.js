@@ -11,6 +11,7 @@ const createDtoInType = shape({
   });
   const listDtoInType = shape({
     topicId: id(), 
+    newspaperId: id(),
     publicationDate: date("%d.%m.%Y"),
     pageInfo: shape({
       pageIndex: integer(),
