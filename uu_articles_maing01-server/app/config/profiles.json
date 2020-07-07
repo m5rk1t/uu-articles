@@ -24,7 +24,8 @@
       "newspaper/get": ["Authorities","Executives","Auditors"],
       "newspaper/list": ["Authorities","Executives","Auditors"],
       "author/get": ["Authorities","Executives","Auditors"],
-      "author/list": ["Authorities","Executives","Auditors"]
+      "author/list": ["Authorities","Executives","Auditors"],
+      "article/delete": ["Authorities","Executives"]
     }
   }
 }

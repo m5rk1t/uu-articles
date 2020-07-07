@@ -80,6 +80,11 @@
         "realization": "api/controllers/AuthorController.get",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "article/delete": {
+        "realization": "api/controllers/ArticleController.delete",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

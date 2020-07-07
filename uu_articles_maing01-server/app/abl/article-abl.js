@@ -13,6 +13,9 @@ const WARNINGS = {
   listUnsupportedKeys: {
     code: `${Errors.List.UC_CODE}unsupportedKeys`
   },
+  deleteUnsupportedKeys: {
+    code: `${Errors.Delete.UC_CODE}unsupportedKeys`
+  },
   createTopicDoesNotExist: {
     code: `${Errors.Create.UC_CODE}topicDoesNotExist`,
     message: "Some topics in dtoIn.topicIdList do not exist."
@@ -31,6 +34,31 @@ class ArticleAbl {
     this.topicDao = DaoFactory.getDao("topic");
     this.newspaperDao = DaoFactory.getDao("newspaper");
     this.authorDao = DaoFactory.getDao("author");    
+  }
+
+  async delete(awid, dtoIn) {
+     // hds 1
+     await ArticlesInstanceAbl.checkInstance(
+      awid,
+      Errors.Delete.ArticlesInstanceDoesNotExist,
+      Errors.Delete.ArticlesInstanceNotInProperState
+    ); 
+    // hds 2
+    let validationResult = this.validator.validate("deleteDtoInType", dtoIn);
+    
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.deleteUnsupportedKeys.code,
+      Errors.Delete.InvalidDtoIn
+    );
+    
+    //hds 3
+    await this.dao.delete(awid, dtoIn.id);
+
+    // hds 4
+    return { uuAppErrorMap };   
+    
   }
 
   async list(awid, dtoIn) {

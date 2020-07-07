@@ -7,6 +7,7 @@ import ArticleProvider from "../bricks/article-provider";
 import ArticleCreate from "../bricks/article-create";
 import ArticlesInstanceContext from "../bricks/articles-instance-context";
 import NewspaperDetail from "../bricks/newspaper-detail";
+import NewspaperUpdate from "../bricks/newspaper-update";
 //@@viewOff:imports
 
 const Newspaper = createVisualComponent({
@@ -63,6 +64,14 @@ const Newspaper = createVisualComponent({
       }
     }
 
+    async function handleUpdateNewspaper(newspaper, values) {
+      try {
+        await updateNewspaperRef.current(newspaper.id, values);
+      } catch {
+        showError(`Update of ${newspaper.name} failed!`);
+      }
+    }
+
     async function handleDeleteArticle(article) {
       try {
         await deleteArticleRef.current(article);
@@ -86,8 +95,10 @@ const Newspaper = createVisualComponent({
     function renderReady(articles) {
       return (
         <>
+        <UU5.Bricks.Section header="Articles" level={2}>
           {isCreateAuthorized() && <ArticleCreate onCreate={handleCreateArticle} newspaperId={newspaperId} />}
           <ArticleList articles={articles} onDelete={handleDeleteArticle} />
+          </UU5.Bricks.Section>
         </>
       );
     }
@@ -106,7 +117,8 @@ const Newspaper = createVisualComponent({
 
     return (
       <UU5.Bricks.Container>
-        <NewspaperDetail newspaperId={newspaperId} />
+        <NewspaperUpdate onUpdate={handleUpdateNewspaper} newspaperId={newspaperId} />
+        <NewspaperDetail newspaperId={newspaperId} onUpdate={handleUpdateNewspaper}/>
         <ArticleProvider newspaperId={newspaperId}>
           {({ viewState, asyncData, handleCreate, handleUpdate, handleDelete, errorState }) => {
             createArticleRef.current = handleCreate;

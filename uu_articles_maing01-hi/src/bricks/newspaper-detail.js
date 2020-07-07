@@ -44,9 +44,9 @@ const NespaperDetail = createComponent({
     function renderReady(newspaper) {
       return (
         <UU5.Bricks.Section header={newspaper.name}>
-          <UU5.Bricks.Text>{newspaper.nameOfChiefEditor}</UU5.Bricks.Text>
-          <UU5.Bricks.DateTime value={newspaper.founded} format="dd.mm.Y" /><br />
-          <UU5.Bricks.Link href={newspaper.website} target="_blank">website</UU5.Bricks.Link>
+          <UU5.Bricks.Text>Name of chief editor: {newspaper.nameOfChiefEditor}</UU5.Bricks.Text>
+          <UU5.Bricks.Text>Founded: <UU5.Bricks.DateTime value={newspaper.founded} format="dd.mm.Y" /></UU5.Bricks.Text>
+          <UU5.Bricks.Text>Website: <UU5.Bricks.Link href={newspaper.website} target="_blank">link</UU5.Bricks.Link></UU5.Bricks.Text>
         </UU5.Bricks.Section>
       );
     }

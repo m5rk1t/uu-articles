@@ -13,7 +13,7 @@ const ArticleCreateForm = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    onSubmit: UU5.PropTypes.func,
+    onSave: UU5.PropTypes.func,
     onCancel: UU5.PropTypes.func,
     defaultNewspaperId: UU5.PropTypes.string
   },
@@ -21,7 +21,7 @@ const ArticleCreateForm = createVisualComponent({
 
   //@@viewOn:defaultProps
   defaultProps: {
-    onSubmit: () => { },
+    onSave: () => { },
     onCancel: () => { },
     defaultNewspaperId: null
   },

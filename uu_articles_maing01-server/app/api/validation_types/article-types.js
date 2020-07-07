@@ -9,6 +9,11 @@ const createDtoInType = shape({
     publicationDate: date("%d.%m.%Y"),
     source: uri().isRequired()
   });
+
+const deleteDtoInType = shape({
+    id: id().isRequired()
+  }); 
+  
   const listDtoInType = shape({
     topicId: id(), 
     newspaperId: id(),

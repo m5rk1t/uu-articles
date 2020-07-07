@@ -15,6 +15,14 @@ class ArticleMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
+  async delete(awid, id) {
+    let filter = {
+      awid: awid,
+      id: id
+    };
+    return await super.deleteOne(filter);
+  }
+
   async list(awid, newspaperId, publicationDate, topicId,  pageInfo) {
     let filter = { awid };
     newspaperId && (filter.newspaperId = newspaperId);
